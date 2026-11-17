@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your 8 Forms of Wealth: What’s Held, What’s Leveraged</title>
+<style>
+:root{--bg:#faf6ee;--card:#fff;--ink:#2a2a24;--mute:#6b6a5e;--line:#e4dccb;--accent:#2f6b4f;--accent2:#c2571a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171a16;--card:#21251f;--ink:#f1ede2;--mute:#a7a898;--line:#363b32;--accent:#7cc79f;--accent2:#f0925a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171a16;--card:#21251f;--ink:#f1ede2;--mute:#a7a898;--line:#363b32;--accent:#7cc79f;--accent2:#f0925a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Georgia,"Times New Roman",serif}
+main{max-width:720px;margin:0 auto;padding:24px 18px 60px}
+h1{font-size:2rem;line-height:1.15;margin:.2em 0}h2{font-size:1.4rem;margin:1.2em 0 .4em}
+.kicker{font:600 .75rem/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.sub,.mute{color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+button{font:600 1rem system-ui,sans-serif;border:0;border-radius:10px;padding:12px 20px;cursor:pointer;background:var(--accent);color:var(--bg)}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.path{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);margin:10px 0;padding:16px}
+.path b{display:block;font-size:1.05rem;color:var(--accent)}.path span{font-weight:400;color:var(--mute);font-size:.92rem}
+.path:hover{border-color:var(--accent)}
+label{font:600 .95rem system-ui,sans-serif;display:flex;justify-content:space-between;margin-top:18px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.bar{height:8px;background:var(--line);border-radius:6px;margin:14px 0 4px}.bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.row{display:flex;gap:10px;justify-content:space-between;margin-top:22px}
+.tag{font:600 .72rem system-ui,sans-serif;padding:3px 9px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.hot{color:var(--accent2)}.good{color:var(--accent)}.seed{color:var(--mute)}
+.gap{display:flex;gap:6px;align-items:center;font:.85rem system-ui,sans-serif;color:var(--mute)}
+ul{padding-left:1.1em;margin:.4em 0}li{margin:.3em 0}
+a{color:var(--accent)}
+svg{width:100%;height:auto;max-width:420px;display:block;margin:0 auto;overflow:visible}
+svg text{fill:var(--ink);font:12px system-ui,sans-serif}
+.legend{display:flex;gap:16px;justify-content:center;font:.85rem system-ui,sans-serif;color:var(--mute)}
+textarea{width:100%;font:1rem/1.5 system-ui,sans-serif;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;resize:vertical}
+</style><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script></head><body><main id="app"></main>
+<script>
+const C=[
+{id:"living",n:"Living",d:"Land, water, ecosystems, your own body and health.",q:["Which living systems do you have access to or care for: land, water, food, your health?"],m:[["Spend real time in a living place weekly and let it inform your next decision.","Start a small food, health or land practice that gives you energy back."],["Turn a piece of land, waste stream or supply chain into a regenerative asset.","Offer your space or grounds for community gardens, learning or healing."],["Build ecological stewardship into your initiative’s governance and metrics.","Partner with local land stewards and Indigenous or traditional land-holders."]]},
+{id:"material",n:"Material",d:"Tools, buildings, equipment, vehicles, spaces.",m:[["List what you own that sits idle and could serve your next chapter.","Declutter toward what the life you want actually needs."],["Open idle space, equipment or vehicles to neighbors or cooperatives.","Convert underused assets into a rentable or shared income stream."],["Create shared infrastructure: tool libraries, commons spaces, shared kitchens.","Map who in your community already holds what you need."]]},
+{id:"financial",n:"Financial",d:"Cash, savings, income, credit, access to investment.",m:[["Build a 6-month runway map so decisions come from freedom, not fear.","Move some savings into local, mission-aligned institutions."],["Add a second income stream that uses what you already have.","Set aside a fixed percent of revenue for community reinvestment."],["Explore community-owned finance: revolving loan funds, giving circles, co-ops.","Diversify funding so no single funder steers your mission."]]},
+{id:"intellectual",n:"Intellectual",d:"Knowledge, skills, ideas, methods, intellectual property.",m:[["Write down your 3 most transferable skills and who needs them.","Teach one thing you know. Teaching clarifies direction."],["Package your know-how into a course, toolkit or mentorship offer.","Open-source part of your methods so others can build on them."],["Document your model so others can replicate it. Share it freely.","Create learning exchanges between your team and grassroots practitioners."]]},
+{id:"experiential",n:"Experiential",d:"Lived experience, practice, wisdom earned by doing.",m:[["Name the hardest chapter you’ve survived and the expertise it gave you.","Seek one apprenticeship or project that tests your next step."],["Turn your hardest-won lessons into advising, storytelling or peer circles.","Hire and pay people for lived experience, not just credentials."],["Put people with lived experience in decision-making seats with real power.","Run after-action reviews and share what failed, not just what worked."]]},
+{id:"social",n:"Social",d:"Relationships, networks, trust, belonging.",m:[["Reach out to 3 people who’ve seen you grow. Ask what they see next.","Join or start a circle of people walking a similar transition."],["Introduce people in your network to each other. Be a bridge.","Share opportunities and referrals with local, grassroots operators."],["Invest in collaboration agreements and shared governance with partners.","Strengthen ties with grassroots leaders before you need anything from them."]]},
+{id:"cultural",n:"Cultural",d:"Stories, traditions, identity, heritage, shared meaning.",m:[["Reconnect with the stories and traditions that shaped you.","Notice which cultural values you inherited and which you’re choosing."],["Let your brand carry local culture honestly. Credit it and pay for it.","Sponsor local artists, storytellers and cultural keepers."],["Center cultural knowledge and community narratives in your strategy.","Make space for ritual and celebration, not just deliverables."]]},
+{id:"spiritual",n:"Spiritual",d:"Purpose, values, inner life, connection to something larger.",m:[["Write your why in one sentence and test your current path against it.","Build a daily practice that gives you quiet to hear yourself."],["Align how you earn with what you believe. Let the gap guide change.","Practice giving without keeping score."],["Anchor your team in shared purpose and practices that sustain leaders.","Protect rest and reflection as part of organizational resilience."]]}];
+const P=[
+{k:"transition",t:"I’m in a decision or transition",s:"A growing gap between the life I’ve built and the life I want to lead."},
+{k:"owner",t:"I own a business or job that gives me freedom",s:"I want other income streams, to give back and to share resources strategically."},
+{k:"leader",t:"I lead an impactful initiative",s:"I want stronger leadership, governance, collaboration and economic resilience."}];
+const BOOK={session:'https://www.holistikwealthlab.com/changemakers-conscious-entrepreneurs-founders',challenges:'https://www.holistikwealthlab.com/changemakers-conscious-entrepreneurs-founders'};
+const RES=[['Regenerative Enterprise (Roland & Landua)','The source of the 8 Forms of Capital work.'],['Asset-Based Community Development Institute','Start from what a community has, not what it lacks.'],['The 8 Riches: A Practical Guide to Multi-capital Thinking','By Danibelle.','https://danibellelistens.substack.com/p/the-8-riches-a-practical-guide-to'],['Doughnut Economics Action Lab','Tools for economies that meet needs within ecological limits.'],['Capital Institute: Field Guide to a Regenerative Economy','Investing in and building regenerative systems.'],['Sociocracy For All','Shared governance and decision-making for teams and communities.']];
+let S={step:-1,path:null,a:C.reduce((o,c)=>(o[c.id]={t:'',v:{}},o),{})};
+const $=document.getElementById("app");
+const EX={living:'e.g. a garden plot, good health, a river nearby',material:'e.g. a van, a spare room, power tools',financial:'e.g. 3 months of savings, steady income, a small loan fund',intellectual:'e.g. grant writing, permaculture design, a training curriculum',experiential:'e.g. 10 years organizing, surviving a layoff, raising a family',social:'e.g. a neighborhood group, mentors, loyal customers',cultural:'e.g. family recipes, a language, a local festival role',spiritual:'e.g. a daily practice, a clear purpose, a faith community'};
+const items=t=>t.split(String.fromCharCode(10)).map(s=>s.trim()).filter(Boolean),esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+const QS={transition:[{k:'u',t:'I feel underresourced in this area'},{k:'f',t:'I feel I have what I need to move forward'},{k:'c',t:'I feel clear about my next step'},{k:'s',t:'I feel supported by people around me'}],owner:[{k:'g',t:'How much would you like this to grow?'},{k:'r',t:'How resourced do you feel to make it happen?'}],leader:[{k:'a',t:'I feel I am sufficiently resourced'},{k:'b',t:'I feel we have what we need to make it happen'}]};
+const sl=(id,q,a)=>{const v=a.v[q.k]??5;return `<label><span>${q.t}</span><span id='v_${q.k}'>${v}</span></label><input type='range' min='0' max='10' value='${v}' oninput="S.a['${id}'].v['${q.k}']=+this.value;document.getElementById('v_${q.k}').textContent=this.value"><div class='gap'><span>not at all</span><span style='flex:1'></span><span>completely</span></div>`};
+function intro(){$.innerHTML=`<div class="kicker">Regenerative wealth check</div><h1>You are richer than the economy tells you.</h1><p class="sub">Eight forms of value make up real wealth. This 5-minute check shows what you hold, what you’re actually putting to work, and where the biggest untapped potential sits. Be honest and generous with yourself. Start by choosing where you are.</p>`+P.map(p=>`<button class="path" onclick="start('${p.k}')"><b>${p.t}</b><span>${p.s}</span></button>`).join("")}
+function start(k){S.path=k;S.step=0;ask()}
+function ask(){const c=C[S.step],a=S.a[c.id],pct=(S.step+1)/8*100;
+$.innerHTML=`<div class="kicker">${S.step+1} of 8</div><div class="bar"><i style="width:${pct}%"></i></div><h1>${c.n} value</h1><p class="sub">${c.d}</p>
+<div class="card"><label for='ta'><span>What do you hold in this form of value?</span><span id='hv'>${items(a.t).length} listed</span></label><p class='mute' style='margin:.3em 0 .6em;font-size:.9rem'>One item per line. Big or small, count it.</p><textarea id='ta' rows='5' placeholder='${esc(EX[c.id])}' oninput="S.a['${c.id}'].t=this.value;hv.textContent=items(this.value).length+' listed'">${esc(a.t)}</textarea>
+${QS[S.path].map(q=>sl(c.id,q,a)).join('')}</div>
+<p class='mute'>Slide to what feels true right now. There’s no right or wrong answer.</p>
+<div class="row"><button class="ghost" onclick="S.step?(S.step--,ask()):intro()">Back</button><button onclick="S.step<7?(S.step++,ask()):results()">${S.step<7?"Next":"See my results"}</button></div>`}
+function radar(r){const cx=170,cy=170,R=120,pt=(i,v)=>{const t=-Math.PI/2+i*Math.PI/4;return[cx+Math.cos(t)*R*v/10,cy+Math.sin(t)*R*v/10]};
+const poly=k=>r.map((x,i)=>pt(i,x[k]).join(",")).join(" ");
+let g=[2,4,6,8,10].map(v=>`<polygon points="${C.map((_,i)=>pt(i,v).join(",")).join(" ")}" fill="none" stroke="var(--line)"/>`).join("");
+g+=C.map((c,i)=>{const[x,y]=pt(i,11.8);return`<line x1="${cx}" y1="${cy}" x2="${pt(i,10)[0]}" y2="${pt(i,10)[1]}" stroke="var(--line)"/><text x="${x}" y="${y+4}" text-anchor="middle">${c.n}</text>`}).join("");
+return`<svg viewBox="0 0 340 340" role="img" aria-label="Radar of held versus resourced value">${g}<polygon points="${poly("h")}" fill="var(--accent)" fill-opacity=".18" stroke="var(--accent)" stroke-width="2"/><polygon points="${poly("l")}" fill="var(--accent2)" fill-opacity=".25" stroke="var(--accent2)" stroke-width="2" stroke-dasharray="5 3"/></svg><div class="legend"><span style="color:var(--accent)">■ Held</span><span style="color:var(--accent2)">■ Resourced (how it feels)</span></div>`}
+function results(){S.step=8;const pi=P.findIndex(p=>p.k===S.path);
+const r=C.map(c=>{const it=items(S.a[c.id].t),h=Math.min(10,it.length*2),v=S.a[c.id].v,n=k=>v[k]??5;let l,g;if(S.path==='owner'){l=n('r');g=n('g')-l}else{l=S.path==='transition'?Math.round((10-n('u')+n('f')+n('c')+n('s'))/4):Math.round((n('a')+n('b'))/2);g=h-l}return{c,it,h,l,g,ans:QS[S.path].map(q=>[q.t,n(q.k)])}});
+const H=r.reduce((s,x)=>s+x.h,0),L=r.reduce((s,x)=>s+x.l,0),pctUse=H?Math.round(L/H*100):0;
+const sorted=[...r].sort((a,b)=>b.g-a.g),top=sorted.filter(x=>x.g>=2).slice(0,3);
+const status=x=>x.g>=3?["Under-leveraged","hot"]:x.h<=3&&x.l<=3?["Seedbed: cultivate","seed"]:x.g>=1?["Room to grow","hot"]:["Well leveraged","good"];
+const move=x=>x.c.m[pi][x.h<=3?1:0];
+const ov=QS[S.path].map((q,i)=>{const vs=r.map(x=>[x.c.n,x.ans[i][1]]),avg=(vs.reduce((s,v)=>s+v[1],0)/8).toFixed(1),hi=[...vs].sort((a,b)=>b[1]-a[1])[0],lo=[...vs].sort((a,b)=>a[1]-b[1])[0];return{t:q.t,avg,hi,lo}});
+const sec=S.path==='owner'?'how resourced you feel to make it happen':S.path==='transition'?'the average of your four answers (your underresourced answer is flipped, so higher always means more resourced)':'the average of your two resourcing answers';
+const gp=S.path==='owner'?'how much you want this to grow, minus how resourced you feel to make it happen':'what you hold, minus how resourced you feel';
+const ex=`Held: 2 points per item you listed, up to 10. Resourced: ${sec}. Gap: ${gp}. Under-leveraged = gap of 3 or more; room to grow = 1 to 2; well leveraged = 0 or less; seedbed = low on both, land to cultivate through relationships.`;S.res={r,H,L,pctUse,sorted,top,status,move,ov,ex};
+$.innerHTML=`<div class="kicker">Your results</div><h1>You hold ${H} of 80.</h1>
+<p class="sub">${top.length?"There is real wealth here that isn’t working for you or your community yet. That is not a failure. It is your opening.":"You’re putting much of your wealth to work. The next level is sharing it strategically and regeneratively."}</p>
+<div class="card">${radar(r)}</div>
+<h2>Where you’re most under-leveraged</h2>
+${top.length?top.map(x=>`<div class="card"><b>${x.c.n} value</b> <span class="gap">held ${x.h} · gap ${x.g}</span><p class='mute' style='margin:.5em 0 0;font-size:.92rem'>You listed: ${x.it.map(esc).join(' · ')||'nothing yet'}</p><p class='mute' style='margin:.5em 0 0;font-size:.92rem'>${x.ans.map(a=>`${a[0]}: <b>${a[1]}/10</b>`).join('<br>')}</p><p style="margin:.5em 0 0"><b>Your move:</b> ${move(x)}</p></div>`).join(""):`<div class="card">No big gaps. Your wealth is already largely at work. Look at your seedbeds below and at how you share what you hold.</div>`}
+<h2>Your overview</h2><div class='card'>${ov.map(o=>`<div style='margin:.8em 0'><b>${o.t}</b><div class='bar'><i style='width:${o.avg*10}%'></i></div><span class='gap'>average ${o.avg}/10 · highest: ${o.hi[0]} (${o.hi[1]}) · lowest: ${o.lo[0]} (${o.lo[1]})</span></div>`).join('')}</div>
+<h2>All eight at a glance</h2>
+<div class="card">${sorted.map(x=>{const[t,k]=status(x);return`<div style="display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)"><span>${x.c.n} <span class="gap">held ${x.h} · resourced ${x.l}</span></span><span class="tag ${k}">${t}</span></div>`}).join("")}</div>
+<div class='card' style='font-size:.92rem'><b>What these numbers mean</b><ul><li><b>Held (0 to 10):</b> 2 points for each item you listed, up to 10. It shows how much value you named.</li><li><b>Resourced (0 to 10):</b> ${sec}.</li><li><b>Gap:</b> ${gp}. The bigger the gap, the more untapped potential.</li><li><b>Under-leveraged:</b> a gap of 3 or more. <b>Room to grow:</b> 1 to 2. <b>Well leveraged:</b> 0 or less. <b>Seedbed:</b> low on both. That is not a deficit. It is land to cultivate, ideally through relationships, not by going it alone.</li></ul></div>
+<h2>Your wealth inventory</h2><div class='card'>${r.map(x=>`<p style='margin:.4em 0'><b>${x.c.n}:</b> ${x.it.length?x.it.map(esc).join(' · '):'<span class=mute>nothing listed yet</span>'}</p>`).join('')}</div><h2>Reflect, then commit</h2>
+<ul><li>Which richness gap surprised you most?</li><li>Who closest to me already holds strength that I need?</li><li>What is one way I can use my wealth to better meet my needs, by exchanging some of my value with those who hold what I need, without using money?</li><li>What is one move I will make in the next 7 days?</li></ul>
+<h2>Further support and inspiration</h2>
+<ul><li>${BOOK.session?`<a href='${BOOK.session}'><b>Book a private session with me</b></a>`:'<b>Book a private session with me</b>'} to explore on deeper levels how you can create the clarity and capacity to make the change you know is needed happen.${BOOK.challenges?` See what challenges I’ve been supporting many with <a href='${BOOK.challenges}'>here</a>.`:''}</li>${RES.map(x=>`<li>${x[2]?`<a href='${x[2]}'><b>${x[0]}</b></a>`:`<b>${x[0]}</b>`}. ${x[1]}</li>`).join('')}</ul>
+<div class="row"><button class="ghost" onclick="S.step=7;ask()">Adjust answers</button><button onclick="dl()">Download PDF</button></div><p id='msg' class='mute'></p>
+<p class="mute" style="margin-top:28px">Framework: the 8 Forms of Capital, from Ethan Roland and Gregory Landua’s Regenerative Enterprise. Your answers stay on this page only.</p>`;window.scrollTo(0,0)}
+const cl=s=>String(s).replace(/[’‘]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,'-').replace(/[·•]/g,'-').replace(/[^ -ÿ]/g,'');
+async function dl(){const m=document.getElementById('msg');m.textContent='';
+try{
+if(!window.jspdf){m.textContent='The PDF tool didn’t load. Please reload and try again.';return}
+const doc=new window.jspdf.jsPDF({unit:'pt',format:'letter'}),R=S.res,M=48;let y=M;
+const G=[47,107,79],O=[194,87,26],K=[42,42,36],Mu=[107,106,94];
+const tx=(s,z,st,c,g)=>{doc.setFont('helvetica',st||'normal');doc.setFontSize(z);doc.setTextColor(...(c||K));doc.splitTextToSize(cl(s),516).forEach(l=>{if(y+z*1.4>744){doc.addPage();y=M}doc.text(l,M,y+z);y+=z*1.4});y+=g||0};
+tx('REGENERATIVE WEALTH CHECK  |  8 FORMS OF VALUE',9,'bold',G,6);
+tx(`${R.H} of 80 held.`,22,'bold',null,4);
+tx(new Date().toLocaleDateString()+'  |  '+P.find(p=>p.k===S.path).t,10,'normal',Mu,4);
+tx('Green bar = what you hold. Orange bar = how resourced you feel.',9,'normal',Mu,12);
+R.r.forEach(x=>{if(y+26>744){doc.addPage();y=M}doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(...K);doc.text(x.c.n,M,y+9);doc.setFillColor(...G);doc.rect(M+80,y,x.h*22,6,'F');doc.setFillColor(...O);doc.rect(M+80,y+9,x.l*22,6,'F');doc.setFont('helvetica','normal');doc.setTextColor(...Mu);doc.text(cl(R.status(x)[0])+'  (held '+x.h+', resourced '+x.l+')',M+80+232,y+11);y+=26});
+y+=10;tx('Your overview',14,'bold',G,4);R.ov.forEach(o=>tx(o.t+': average '+o.avg+'/10 | highest: '+o.hi[0]+' ('+o.hi[1]+') | lowest: '+o.lo[0]+' ('+o.lo[1]+')',10,'normal',null,3));y+=6;tx('What the numbers mean',12,'bold',G,3);tx(R.ex,9,'normal',Mu,6);
+y+=10;tx('Where you are most under-leveraged',14,'bold',G,4);
+if(R.top.length)R.top.forEach(x=>{tx(x.c.n+' value  (held '+x.h+', gap '+x.g+')',11,'bold',null,0);tx('You listed: '+(x.it.join(' | ')||'nothing yet'),10,'normal',Mu,0);tx(x.ans.map(a=>a[0]+': '+a[1]+'/10').join('  |  '),9,'normal',Mu,2);tx('Your move: '+x.c.m[P.findIndex(p=>p.k===S.path)][x.h<=3?1:0],11,'normal',null,10)});else tx('No big gaps. Your wealth is largely at work. Look at how you share it.',11,'normal',null,10);
+y+=4;tx('Your wealth inventory',14,'bold',G,4);
+R.r.forEach(x=>tx(x.c.n+': '+(x.it.join(' | ')||'nothing listed yet'),10,'normal',null,3));
+y+=10;tx('Reflect, then commit',14,'bold',G,4);
+['Which richness gap surprised you most?','Who closest to me already holds strength that I need?','What is one way I can use my wealth to better meet my needs, by exchanging some of my value with those who hold what I need, without using money?','What is one move I will make in the next 7 days?'].forEach(s=>tx('- '+s,11,'normal',null,3));
+y+=10;tx('Further support and inspiration',14,'bold',G,4);
+tx('- Book a private session with me to explore on deeper levels how you can create the clarity and capacity to make the change you know is needed happen.'+(BOOK.session?' '+BOOK.session:'')+(BOOK.challenges?' See what challenges I have been supporting many with: '+BOOK.challenges:''),10,'normal',null,3);RES.forEach(x=>tx('- '+x[0]+': '+x[1]+(x[2]?' '+x[2]:''),10,'normal',null,3));
+y+=12;tx('Framework: the 8 Forms of Capital, from Ethan Roland and Gregory Landua, Regenerative Enterprise.',8,'normal',Mu);
+doc.save('my-8-forms-wealth-check.pdf');m.textContent='Saved. Thank you for naming your wealth.'}
+catch(e){m.textContent=e&&e.code==='declined'?'No problem. You can download it any time.':'Couldn’t save the PDF here. Please try again.'}}
+intro();
+</script></body></html>
